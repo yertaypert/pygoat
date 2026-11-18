@@ -101,7 +101,7 @@ DATABASES = {
 # This keeps local dev on sqlite but allows production to use Postgres.
 import dj_database_url
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = get_secret("DATABASE_URL", "")
 if DATABASE_URL:
     DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 
