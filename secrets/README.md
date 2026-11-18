@@ -42,6 +42,31 @@ sops secrets/pygoat.enc.yaml   # opens $EDITOR on the decrypted document
 sops updatekeys secrets/pygoat.enc.yaml
 ```
 
+## Centralized provisioning (Vault)
+
+A dev-mode Vault runs through a compose profile:
+
+```bash
+docker compose --profile vault up -d --wait vault
+scripts/vault-demo.sh
+```
+
+The demo seeds `secret/pygoat`, applies `policies/pygoat-read.hcl`, creates a
+1-hour read-only token, and runs the app with only `VAULT_ADDR` and
+`VAULT_TOKEN` set. It also shows that the same token cannot write.
+
+The seeded key is generated fresh unless `VAULT_DEMO_SECRET_KEY` is explicitly
+set, so an exported `DJANGO_SECRET_KEY` is never copied into the demo Vault.
+
+Teardown:
+
+```bash
+docker compose --profile vault rm -sf vault
+```
+
+Dev mode stores secrets in memory and uses the root token `root`. Both are for
+local experimentation only.
+
 ## Rules
 
 - Never commit `secrets/*.plain.yaml` or the age private key (`key.txt`).
