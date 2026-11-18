@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import os
+
+from .secret_store import get_secret
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "lr66%-a!$km5ed@n5ug!tya5bv!0(yqwa1tn!q%0%3m2nh%oml"
+SECRET_KEY = get_secret("DJANGO_SECRET_KEY")
 
 SENSITIVE_DATA = "FLAGTHATNEEDSTOBEFOUND"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_secret("DJANGO_DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = ["pygoat.herokuapp.com", "0.0.0.0", "127.0.0.1", "localhost", "lvh.me", ".lvh.me", "web"]
 
@@ -187,7 +188,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 TRAEFIK_URLS = [
-    'http://localhost:8080/api/http/routers',     
+    'http://localhost:8080/api/http/routers',
     'http://traefik_proxy:8080/api/http/routers',
 ]
 
