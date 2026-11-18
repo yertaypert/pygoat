@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Encrypted secret files and scanner evidence are not leaks"
+paths = [
+  '''secrets/.*\.enc\.yaml''',
+  '''evidence/''',
+]

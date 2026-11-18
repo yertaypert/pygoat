@@ -11,6 +11,7 @@ bin
 *.env
 key.txt
 secrets.yaml
+secrets/*.plain.yaml
 reports/
 
 #  LOG files
